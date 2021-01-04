@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>EVEON_GPIO_IN</title>
+</head>
+<body>
+    <p>Hello EVERON GPIO IN Test world</p>
+    <button type="button" class="btn btn-primary" onclick="location.href='http://localhost:5000/gpio_out'">GPIO_OUT</button>
+    <button type="button" class="btn btn-primary" onclick="location.href='http://localhost:5000/gpio_in'">GPIO_in</button>
+    <button type="button" class="btn btn-primary" onclick="location.href='http://localhost:5000/adc'">adc</button>
+<table class="table table-striped">
+    
+    <body>
+        <tr>
+            <td>CCS_01_PD</td>
+            <td id="CCS_01_PD"></td>
+        </tr>
+        <tr>
+            <td>CCS_01_TEMP</td>
+            <td id="CCS_01_TEMP"></td>
+        </tr>
+        <tr>
+            <td>CCS_02_PD</td>
+            <td id="CCS_02_PD"></td>
+        </tr>
+        <tr>
+            <td>CCS_02_TEMP</td>
+            <td id="CCS_02_TEMP"></td>
+        </tr>
+        <tr>
+            <td>DCPT_01</td>
+            <td id="DCPT_01"></td>
+        </tr>
+        <tr>
+            <td>DCPT_02</td>
+            <td id="DCPT_02"></td>
+        </tr>
+        <tr>
+            <td>TEST_TEMP</td>
+            <td id="TEST_TEMP"></td>
+        </tr>
+    </body>
+</table>
+    <script>
+        get_gpio_in();
+
+        var interval_timer = 1500;
+        setInterval(function () {
+            get_gpio_in()
+        }, interval_timer);
+
+        function get_gpio_in() {
+            $.ajax({
+                url: 'http://localhost:5000/adc/update',
+                type: 'GET',
+                contentType: 'javascript/json; charset=utf-8',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    document.querySelector('#CCS_01_PD').innerHTML = data['CCS_01_PD'];
+                    document.querySelector('#CCS_01_TEMP').innerHTML = data['CCS_01_TEMP'];
+                    document.querySelector('#CCS_02_PD').innerHTML = data['CCS_02_PD'];
+                    document.querySelector('#CCS_02_TEMP').innerHTML = data['CCS_02_TEMP'];
+                    document.querySelector('#DCPT_01').innerHTML = data['DCPT_01'];
+                    document.querySelector('#DCPT_02').innerHTML = data['DCPT_02'];
+                    document.querySelector('#TEST_TEMP').innerHTML = data['TEST_TEMP'];
+                }
+            });
+        }
+
+    </script>
+
+
+
+</body>
+</html>

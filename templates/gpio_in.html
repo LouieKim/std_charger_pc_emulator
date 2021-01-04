@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>EVEON_GPIO_IN</title>
+</head>
+<body>
+    <p>Hello EVERON GPIO IN Test world</p>
+    <button type="button" class="btn btn-primary" onclick="location.href='http://localhost:5000/gpio_out'">GPIO_OUT</button>
+    <button type="button" class="btn btn-primary" onclick="location.href='http://localhost:5000/gpio_in'">GPIO_in</button>
+    <button type="button" class="btn btn-primary" onclick="location.href='http://localhost:5000/adc'">adc</button>
+
+<table class="table table-striped">
+    <body>
+        <tr>
+            <td>CH_01_Voltage</td>
+            <td id="DOOR_01"></td>
+        </tr>
+        <tr>
+            <td>CH_01_PWM</td>
+            <td id="DOOR_02"></td>
+        </tr>
+        <tr>
+            <td>CH_02_Voltage</td>
+            <td id="DSEN_01"></td>
+        </tr>
+        <tr>
+            <td>CH_02_PWM</td>
+            <td id="DSEN_02"></td>
+        </tr>
+        <tr>
+            <td>CH_03_Voltage</td>
+            <td id="MC_01"></td>
+        </tr>
+        <tr>
+            <td>CH_03_PWM</td>
+            <td id="MC_02"></td>
+        </tr>
+        
+
+    </body>
+</table>
+    <script>
+        get_gpio_in();
+
+        var interval_timer = 5000;
+        setInterval(function () {
+            get_gpio_in()
+        }, interval_timer);
+
+        function get_gpio_in() {
+            $.ajax({
+                url: 'http://localhost:5000/gpio_in/update',
+                type: 'GET',
+                contentType: 'javascript/json; charset=utf-8',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    document.querySelector('#DOOR_01').innerHTML = data['DOOR_01'];
+                    document.querySelector('#DOOR_02').innerHTML = data['DOOR_02'];
+                    
+                    document.querySelector('#DSEN_01').innerHTML = data['DSEN_01'];
+                    document.querySelector('#DSEN_02').innerHTML = data['DSEN_02'];
+
+                    document.querySelector('#MC_01').innerHTML = data['MC_01'];
+                    document.querySelector('#MC_02').innerHTML = data['MC_02'];
+                    
+                    //document.querySelector('#RELAY_01').innerHTML = data['RELAY_01'];
+                    //document.querySelector('#RELAY_02').innerHTML = data['RELAY_02'];
+                    //document.querySelector('#RELAY_03').innerHTML = data['RELAY_03'];
+                    //document.querySelector('#RELAY_04').innerHTML = data['RELAY_04'];
+                    //document.querySelector('#RELAY_05').innerHTML = data['RELAY_05'];
+                    //document.querySelector('#RELAY_06').innerHTML = data['RELAY_06'];
+                    //document.querySelector('#EMERGENCY').innerHTML = data['EMERGENCY'];
+                },
+                timeout: 5000
+            });
+        }
+
+    </script>
+
+
+
+</body>
+</html>
