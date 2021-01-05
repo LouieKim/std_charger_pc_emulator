@@ -153,7 +153,6 @@ if __name__ == "__main__":
 
     SER = serial.Serial(COM_PORT, baudrate=9600, timeout=3.0)
 
-    main()
     # 데몬 쓰레드
     t1 = threading.Thread(target=getHtml, args=('http://google.com',))
     t1.daemon = True 
