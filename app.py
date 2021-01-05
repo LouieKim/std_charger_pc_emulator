@@ -10,8 +10,8 @@ import threading, requests, time
 
 app = Flask(__name__)
 
-COM_PORT = 'COM3'
-SER = serial.Serial(COM_PORT, baudrate=38400, timeout=3.0)
+COM_PORT = 'COM6'
+SER = serial.Serial(COM_PORT, baudrate=9600, timeout=3.0)
 
 @app.route('/')
 def hello():   
@@ -72,9 +72,9 @@ def gpio_in_update():
 
     try:
         
-        gpio_in_dict = {'DOOR_01': data_list[5], 'DOOR_02': data_list[7], 'DSEN_01': data_list[9], 'DSEN_02': data_list[11], 'MC_01': data_list[13], 'MC_02': data_list[15]}
-
-                #'RELAY_01': rr.bits[6], 'RELAY_02': rr.bits[7], 'RELAY_03': rr.bits[8], 'RELAY_04': rr.bits[9], 'RELAY_05': rr.bits[10], 'RELAY_06': rr.bits[11],
+        gpio_in_dict = {'DOOR_01': data_list[3], 'DOOR_02': data_list[4], 'DSEN_01': data_list[5], 'DSEN_02': data_list[6], 'MC_01': data_list[7], 'MC_02': data_list[8]
+                ,'RELAY_01': data_list[9], 'RELAY_02':  data_list[10], 'RELAY_03': data_list[11]}
+                #, 'RELAY_04': rr.bits[9], 'RELAY_05': rr.bits[10], 'RELAY_06': rr.bits[11]
                 #'EMERGENCY': rr.bits[12]}
 
 
@@ -145,6 +145,7 @@ if __name__ == "__main__":
 
 
     main()
+
     #slave_01()  
 
     #1번 채널 스타트
@@ -182,10 +183,15 @@ if __name__ == "__main__":
     #SER.write(b'\x00\x2a\x25')
 
     # Data 요청
+    #SER.write(serial.to_bytes([0x02,0x01,0x03,0x00,0x00,0x00,0x02,0xc4,0x0b,0x0d]))
+    #SER.write(serial.to_bytes([0x02,0x01,0x04,0x00,0x00,0x00,0x0c,0xf0,0x0f,0x0d]))
+    #SER.write(serial.to_bytes([0x02,0x01,0x10,0x00,0xc8,0x00,0x04,0x08,0x00,0x08,0x00,0x01,0x00,0x00,0x00,0x00,0xe0,0xe4, 0x0d]))
+    #SER.write(serial.to_bytes([0x01,0x04,0x00,0x01,0x00,0x0a,0x21,0xcd]))
     #SER.write(serial.to_bytes([0x02,0x01,0x04,0x00,0x00,0x00,0x06,0x70,0x08,0x0d]))
 
     #ser_bytes = SER.readline()
-    #print(ser_bytes)
+    #ser_bytes = SER.read()
+    #print(ser_bytes.hex())
     
 
     #SER.close()

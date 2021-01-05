@@ -9,44 +9,64 @@
     <title>Everon Test GUI</title>
 </head>
 <body>
+    
     <p>Hello EVERON GPIO OUT Test world</p>
+    <div style="display:flex;">
+        <div>
+        <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.door_01, 'on')">CH_01 Start</button>
+        <P></P>
+        <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.door_01,'off')">CH_01 Stop</button>
+        <P></P>
+        <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.door_02, 'on')">CH_02 Start</button>
+        <P></P>
+        <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.door_02,'off')">CH_02 Stop</button>
+        <P></P>
+        <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.fan_01, 'on')">CH_03 Start</button>
+        <P></P>
+        <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.fan_01,'off')">CH_03 Stop</button>
+        <P></P>
+        </div>
 
-    <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.door_01, 'on')">CH_01 Start</button>
-    <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.door_01,'off')">CH_01 Stop</button>
-    <P></P>
-    <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.door_02, 'on')">CH_02 Start</button>
-    <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.door_02,'off')">CH_02 Stop</button>
-    <P></P>
-    <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.fan_01, 'on')">CH_03 Start</button>
-    <button class="btn btn-primary btn-lg" onclick="btn_test(device_enum.fan_01,'off')">CH_03 Stop</button>
-    <P></P>
-
-    <table class="table table-striped">
-        <tr>
-            <td>CH_01_Voltage</td>
-            <td id="DOOR_01"></td>
-        </tr>
-        <tr>
-            <td>CH_01_PWM</td>
-            <td id="DOOR_02"></td>
-        </tr>
-        <tr>
-            <td>CH_02_Voltage</td>
-            <td id="DSEN_01"></td>
-        </tr>
-        <tr>
-            <td>CH_02_PWM</td>
-            <td id="DSEN_02"></td>
-        </tr>
-        <tr>
-            <td>CH_03_Voltage</td>
-            <td id="MC_01"></td>
-        </tr>
-        <tr>
-            <td>CH_03_PWM</td>
-            <td id="MC_02"></td>
-        </tr>
-    </table>
+    
+        <table class="table table-striped">
+            <tr>
+                <td>CH_01_Voltage</td>
+                <td id="DOOR_01"></td>
+            </tr>
+            <tr>
+                <td>CH_01_PWM</td>
+                <td id="DOOR_02"></td>
+            </tr>
+            <tr>
+                <td>CH_02_Voltage</td>
+                <td id="DSEN_01"></td>
+            </tr>
+            <tr>
+                <td>CH_02_PWM</td>
+                <td id="DSEN_02"></td>
+            </tr>
+            <tr>
+                <td>CH_03_Voltage</td>
+                <td id="MC_01"></td>
+            </tr>
+            <tr>
+                <td>CH_03_PWM</td>
+                <td id="MC_02"></td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td id="RELAY_01"></td>
+            </tr>
+            <tr>
+                <td>Voltage</td>
+                <td id="RELAY_02"></td>
+            </tr>
+            <tr>
+                <td>Current</td>
+                <td id="RELAY_03"></td>
+            </tr>
+        </table>
+    </div>
     
     <script>
         var device_enum = {"door_01":0, "door_02":1, "fan_01":2, "fan_02":3, "mc_01":4, "mc_02":5, "relay_01_02":6, "relay_03_04":7, "relay_05_06":8, 
@@ -85,9 +105,10 @@
                     document.querySelector('#MC_01').innerHTML = data['MC_01'];
                     document.querySelector('#MC_02').innerHTML = data['MC_02'];
                     
-                    //document.querySelector('#RELAY_01').innerHTML = data['RELAY_01'];
-                    //document.querySelector('#RELAY_02').innerHTML = data['RELAY_02'];
-                    //document.querySelector('#RELAY_03').innerHTML = data['RELAY_03'];
+                    document.querySelector('#RELAY_01').innerHTML = data['RELAY_01'];
+                    document.querySelector('#RELAY_02').innerHTML = data['RELAY_02'];
+                    document.querySelector('#RELAY_03').innerHTML = data['RELAY_03'];
+
                     //document.querySelector('#RELAY_04').innerHTML = data['RELAY_04'];
                     //document.querySelector('#RELAY_05').innerHTML = data['RELAY_05'];
                     //document.querySelector('#RELAY_06').innerHTML = data['RELAY_06'];
