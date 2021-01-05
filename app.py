@@ -7,11 +7,11 @@ import signal
 import time
 import sys
 import threading, requests, time
+import platform
 
 app = Flask(__name__)
 
-COM_PORT = 'COM6'
-SER = serial.Serial(COM_PORT, baudrate=9600, timeout=3.0)
+
 
 @app.route('/')
 def hello():   
@@ -32,6 +32,8 @@ def device_gpio_out(device, command):
             if (cmd):
                 #1번 채널 스타트
                 SER.write(serial.to_bytes([0x02,0x01,0x10,0x00,0xc8,0x00,0x04,0x08,0x00,0x08,0x00,0x01,0x00,0x00,0x00,0x00,0xe0,0xe4, 0x0d]))
+                ser_bytes = SER.readline()
+                print(ser_bytes)
             else:
                 #1번 채널 종료
                 SER.write(serial.to_bytes([0x02,0x01,0x10,0x00,0xc8,0x00,0x04,0x08,0x00,0x10,0x00,0x01,0x00,0x00,0x00,0x00,0x78,0xe5, 0x0d]))
@@ -134,10 +136,24 @@ def getHtml(url):
         
         print(data_list)
         
-        time.sleep(2)
+        time.sleep(1)
 
 
 if __name__ == "__main__":
+    global COM_PORT
+    global SER
+    
+    
+    if platform.system() == "Linux":
+        print("linix")
+        COM_PORT = '/dev/ttyUSB0'
+    else:
+        print("window")
+        COM_PORT = 'COM6'
+
+    SER = serial.Serial(COM_PORT, baudrate=9600, timeout=3.0)
+
+    main()
     # 데몬 쓰레드
     t1 = threading.Thread(target=getHtml, args=('http://google.com',))
     t1.daemon = True 
