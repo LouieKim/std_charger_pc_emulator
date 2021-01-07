@@ -142,7 +142,6 @@ if __name__ == "__main__":
     global COM_PORT
     global SER
     
-    
     if platform.system() == "Linux":
         print("linix")
         COM_PORT = '/dev/ttyUSB0'
