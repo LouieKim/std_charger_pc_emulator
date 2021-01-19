@@ -101,19 +101,27 @@ if __name__ == "__main__":
     global client
 
     try:
-        client = ModbusClient(method='rtu', port='com3', timeout=5000, baudrate=9600)
+        #scale = ModbusClient(method='rtu', port='/dev/ttyUSB0', parity='N', baudrate=9600, bytesize=8, stopbits=2, timeout=1, strict=False)
+        client = ModbusClient(method='rtu', port='com6', timeout=10, baudrate=9600)
         client.connect()
 
-        modbus_register = client.read_holding_registers(1, 2, unit=UNIT)
-        time.sleep(2) # Delay를 두지 않으면 모두 받지 못했다고 투덜댐
+        modbus_register = client.read_holding_registers(0, 2, unit=UNIT)
+        time.sleep(1) # Delay를 두지 않으면 모두 받지 못했다고 투덜댐
 
-        print(modbus_register)
+        
 
-        adc_dict = {"CCS_01_PD": str(modbus_register.registers[0]), "CCS_01_TEMP": str(modbus_register.registers[1])} #"CCS_02_PD": str(modbus_register.registers[2]), 
+        if modbus_register.isError():
+            # handle error, log?
+            print('Modbus Error:', modbus_register)
+        else:
+            result = modbus_register.registers
+            print(result)
+
+        #adc_dict = {"CCS_01_PD": str(modbus_register.registers[0]), "CCS_01_TEMP": str(modbus_register.registers[1])} #"CCS_02_PD": str(modbus_register.registers[2]), 
         #CCS_02_TEMP": str(modbus_register.registers[3]), "DCPT_01": str(modbus_register.registers[4]), "DCPT_02": str(modbus_register.registers[5]), "TEST_TEMP": str(modbus_register.registers[6])}
 
-        resource_json = json.dumps(adc_dict)
-        print(resource_json)
+        #resource_json = json.dumps(adc_dict)
+        #print(resource_json)
 
     except Exception as e:
         print(e)

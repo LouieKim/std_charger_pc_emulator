@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <title>Everon Test GUI</title>
+</head>
+<body>
+    
+    <p>Hello EVERON Monitoring Test world</p>
+    
+    <table class="table table-striped">
+        <tr>
+            <td></td>
+            <td>CH_01</td>
+            <td>CH_02</td>
+            <td>CH_03</td>
+        </tr>
+        <tr>
+            <td>STATUS</td>
+            <td id="ch01_status"></td>
+            <td id="ch02_status"></td>
+            <td id="ch03_status"></td>
+        </tr>
+        <tr>
+            <td>PWM_DUTY</td>
+            <td id="ch01_pwm_duty"></td>
+            <td id="ch02_pwm_duty"></td>
+            <td id="ch03_pwm_duty"></td>
+        </tr>
+        <tr>
+            <td>AVG_VOL</td>
+            <td id="ch01_avg_vol"></td>
+            <td id="ch02_avg_vol"></td>
+            <td id="ch03_avg_vol"></td>
+        </tr>
+        <tr>
+            <td>VOL</td>
+            <td id="ch01_vol"></td>
+            <td id="ch02_vol"></td>
+            <td id="ch03_vol"></td>
+        </tr>
+        <tr>
+            <td>AC_VOL</td>
+            <td id="ch01_AC_vol"></td>
+            <td id="ch02_AC_vol"></td>
+            <td id="ch03_AC_vol"></td>
+        </tr>
+        <tr>
+            <td>AC_CUR</td>
+            <td id="ch01_AC_cur"></td>
+            <td id="ch02_AC_cur"></td>
+            <td id="ch03_AC_cur"></td>
+        </tr>
+        <tr>
+            <td>EMG</td>
+            <td id="ch01_emg"></td>
+            <td id="ch02_emg"></td>
+            <td id="ch03_emg"></td>
+        </tr>
+        <tr>
+            <td>CP_RY</td>
+            <td id="ch01_cp_ry"></td>
+            <td id="ch02_cp_ry"></td>
+            <td id="ch03_cp_ry"></td>
+        </tr>
+        <tr>
+            <td>MC</td>
+            <td id="ch01_mc"></td>
+            <td id="ch02_mc"></td>
+            <td id="ch03_mc"></td>
+        </tr>
+        <tr>
+            <td>WD</td>
+            <td id="ch01_wd"></td>
+            <td id="ch02_wd"></td>
+            <td id="ch03_wd"></td>
+        </tr>
+    </table>
+    
+    <script>
+        var interval_timer = 1000;
+
+        setInterval(function () {
+            get_data()
+        }, interval_timer);
+
+        function get_data() {
+            $.ajax({
+                url: 'http://localhost:5000/monitoring/update',
+                type: 'GET',
+                contentType: 'javascript/json; charset=utf-8',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    document.querySelector('#ch01_status').innerHTML = data['ch01_status'];
+                    document.querySelector('#ch01_pwm_duty').innerHTML = data['ch01_pwm_duty'];
+                    document.querySelector('#ch01_avg_vol').innerHTML = data['ch01_avg_vol'];
+                    document.querySelector('#ch01_vol').innerHTML = data['ch01_vol'];
+                    document.querySelector('#ch01_AC_vol').innerHTML = data['ch01_AC_vol'];
+                    document.querySelector('#ch01_AC_cur').innerHTML = data['ch01_AC_cur'];
+                    document.querySelector('#ch01_emg').innerHTML = data['ch01_emg'];
+                    document.querySelector('#ch01_cp_ry').innerHTML = data['ch01_cp_ry'];
+                    document.querySelector('#ch01_mc').innerHTML = data['ch01_mc'];
+                    document.querySelector('#ch01_wd').innerHTML = data['ch01_wd'];
+
+                    document.querySelector('#ch02_status').innerHTML = data['ch02_status'];
+                    document.querySelector('#ch02_pwm_duty').innerHTML = data['ch02_pwm_duty'];
+                    document.querySelector('#ch02_avg_vol').innerHTML = data['ch02_avg_vol'];
+                    document.querySelector('#ch02_vol').innerHTML = data['ch02_vol'];
+                    document.querySelector('#ch02_AC_vol').innerHTML = data['ch02_AC_vol'];
+                    document.querySelector('#ch02_AC_cur').innerHTML = data['ch02_AC_cur'];
+                    document.querySelector('#ch02_emg').innerHTML = data['ch02_emg'];
+                    document.querySelector('#ch02_cp_ry').innerHTML = data['ch02_cp_ry'];
+                    document.querySelector('#ch02_mc').innerHTML = data['ch02_mc'];
+                    document.querySelector('#ch02_wd').innerHTML = data['ch02_wd'];
+
+                    document.querySelector('#ch03_status').innerHTML = data['ch03_status'];
+                    document.querySelector('#ch03_pwm_duty').innerHTML = data['ch03_pwm_duty'];
+                    document.querySelector('#ch03_avg_vol').innerHTML = data['ch03_avg_vol'];
+                    document.querySelector('#ch03_vol').innerHTML = data['ch03_vol'];
+                    document.querySelector('#ch03_AC_vol').innerHTML = data['ch03_AC_vol'];
+                    document.querySelector('#ch03_AC_cur').innerHTML = data['ch03_AC_cur'];
+                    document.querySelector('#ch03_emg').innerHTML = data['ch03_emg'];
+                    document.querySelector('#ch03_cp_ry').innerHTML = data['ch03_cp_ry'];
+                    document.querySelector('#ch03_mc').innerHTML = data['ch03_mc'];
+                    document.querySelector('#ch03_wd').innerHTML = data['ch03_wd'];
+                },
+                timeout: 5000
+            });
+        }
+
+    </script>
+</body>
+</html>
