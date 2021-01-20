@@ -28,9 +28,9 @@ def gpio_in_update():
     ch03_ac_vol = int(data_list[51], 16) << 8 | int(data_list[52], 16)
 
     try:
-        gpio_in_dict = {'ch01_status': data_list[4], 'ch01_pwm_duty': data_list[6], 'ch01_avg_vol': data_list[8], 'ch01_vol': data_list[10], 'ch01_AC_vol': round(ch01_ac_vol*0.1,2), 'ch01_AC_cur': data_list[14], 'ch01_emg': data_list[16], 'ch01_cp_ry': data_list[18], 'ch01_mc': data_list[20], 'ch01_wd': data_list[22]
-                    , 'ch02_status': data_list[24], 'ch02_pwm_duty': data_list[26], 'ch02_avg_vol': data_list[28], 'ch02_vol': data_list[30], 'ch02_AC_vol': round(ch02_ac_vol*0.1,2), 'ch02_AC_cur': data_list[34], 'ch02_emg': data_list[36], 'ch02_cp_ry': data_list[38], 'ch02_mc': data_list[40], 'ch02_wd': data_list[42]
-                    , 'ch03_status': data_list[44], 'ch03_pwm_duty': data_list[46], 'ch03_avg_vol': data_list[48], 'ch03_vol': data_list[50], 'ch03_AC_vol': round(ch03_ac_vol*0.1,2), 'ch03_AC_cur': data_list[54], 'ch03_emg': data_list[56], 'ch03_cp_ry': data_list[58], 'ch03_mc': data_list[60], 'ch03_wd': data_list[62]}
+        gpio_in_dict = {'ch01_status': data_list[4], 'ch01_pwm_duty': int(data_list[6], 16), 'ch01_avg_vol': int(data_list[8], 16), 'ch01_vol': int(data_list[10], 16), 'ch01_AC_vol': round(ch01_ac_vol*0.1,2), 'ch01_AC_cur': int(data_list[14], 16), 'ch01_emg': data_list[16], 'ch01_cp_ry': data_list[18], 'ch01_mc': data_list[20], 'ch01_wd': data_list[22]
+                    , 'ch02_status': data_list[24], 'ch02_pwm_duty': int(data_list[26], 16), 'ch02_avg_vol': int(data_list[28], 16), 'ch02_vol': int(data_list[30], 16), 'ch02_AC_vol': round(ch02_ac_vol*0.1,2), 'ch02_AC_cur': int(data_list[34], 16), 'ch02_emg': data_list[36], 'ch02_cp_ry': data_list[38], 'ch02_mc': data_list[40], 'ch02_wd': data_list[42]
+                    , 'ch03_status': data_list[44], 'ch03_pwm_duty': int(data_list[46], 16), 'ch03_avg_vol': int(data_list[48], 16), 'ch03_vol': int(data_list[50], 16), 'ch03_AC_vol': round(ch03_ac_vol*0.1,2), 'ch03_AC_cur': int(data_list[54], 16), 'ch03_emg': data_list[56], 'ch03_cp_ry': data_list[58], 'ch03_mc': data_list[60], 'ch03_wd': data_list[62]}
 
         resource_json = json.dumps(gpio_in_dict)
         return resource_json
@@ -67,8 +67,8 @@ crcTable=[0x0000,0xC0C1,0xC181,0x0140,0xC301,0x03C0,0x0280,0xC241,0xC601,0x06C0,
 def crc16(data): 
     crc= [0xff, 0xff]; 
     for datum in data: 
-        ncrc = crcTable[(crc[0] ^ datum)] 
-        crc[0] = (ncrc & 0x00FF) ^ crc[1] 
+        ncrc = crcTable[(crc[0] ^ datum)]
+        crc[0] = (ncrc & 0x00FF) ^ crc[1]
         crc[1] = ncrc >> 8 
     data.append(crc[0])
     data.append(crc[1])
@@ -92,19 +92,22 @@ def get_data_thread():
     response_num = 65
     
     while(1):
-        req_tx = [0x01, 0x04, 0x00, 0x00, 0x00, 0x1e]
-        req_tx = crc16(req_tx)
+        try:
+            req_tx = [0x01, 0x04, 0x00, 0x00, 0x00, 0x1e]
+            req_tx = crc16(req_tx)
 
-        SER.write(serial.to_bytes(req_tx))
+            SER.write(serial.to_bytes(req_tx))
 
-        data_list.clear()
+            data_list.clear()
 
-        for i in range(response_num):
-            ser_bytes = SER.read()
-            data_list.append(ser_bytes.hex())
-            
-        print(data_list)
-        time.sleep(2)
+            for i in range(response_num):
+                ser_bytes = SER.read()
+                data_list.append(ser_bytes.hex())
+                
+            print(data_list)
+            time.sleep(2)
+        except Exception as e:
+            print(e)
 
 if __name__ == "__main__":
     global COM_PORT
@@ -115,9 +118,13 @@ if __name__ == "__main__":
         COM_PORT = '/dev/ttyUSB0'
     else:
         print("window")
-        COM_PORT = 'COM6'
+        COM_PORT = 'COM3'
 
-    SER = serial.Serial(COM_PORT, baudrate=38400, timeout=3.0)
+    try:
+        SER = serial.Serial(COM_PORT, baudrate=38400, timeout=3.0)
+    except Exception as e:
+        print(e)
+        sys.exit()
 
     # 데몬 쓰레드
     t1 = threading.Thread(target=get_data_thread)
